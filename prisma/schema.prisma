@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          String    @default("admin") // admin, editor
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Service {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  description   String?
+  content       String?   // Rich text content
+  category      String?   // e.g., "SaaS", "AI", "Mobile"
+  isFeatured    Boolean   @default(false)
+  icon          String?   // Icon identifier
+  outcomes      String?   // JSON array of outcomes
+  timeline      String?   // Timeline description
+  budgetRange   String?   // Budget range description
+  relatedServices String? // JSON array of related service IDs
+  packages      String?   // JSON array of packages
+  faqs          String?   // JSON array of FAQs
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  caseStudies   CaseStudy[]
+}
+
+model Solution {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  tagline         String?
+  description     String?
+  content         String?   // Rich text content
+  type            String    // "PRODUCT", "KIT", "LAB"
+  status          String    @default("LIVE") // LIVE, BETA, COMING_SOON
+  isFeatured      Boolean   @default(false)
+  category        String?   // e.g., "EdTech", "FinTech", "Community"
+  whoItsFor       String?   // JSON array
+  features        String?   // JSON array
+  architecture    String?   // JSON object with tech stack
+  engagementOptions String? // JSON array
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model CaseStudy {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  client        String?   // Can be "Confidential"
+  industry      String?
+  problem       String?   // One-line problem
+  result        String?   // One-line result/metric
+  background    String?   // Rich text
+  challenge     String?   // Rich text
+  whatWeBuilt   String?   // Rich text
+  results       String?   // JSON array of metrics
+  whatsNext     String?   // Rich text
+  techStack     String?   // JSON array
+  servicesUsed  String?   // JSON array of service IDs
+  tags          String?   // JSON array
+  featuredImage String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  service       Service?  @relation(fields: [serviceId], references: [id])
+  serviceId     String?
+}
+
+model BlogPost {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  excerpt        String?
+  content       String    // Rich text
+  author        String?
+  tags          String?   // JSON array
+  category      String?   // Product, AI, Dev, Growth, Drogenide Stories
+  featuredImage String?
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Job {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  department    String?
+  location      String?
+  type          String?   // Full-time, Part-time, Contract
+  summary       String?
+  responsibilities String? // JSON array
+  requirements  String?   // JSON array
+  niceToHave    String?   // JSON array
+  howToApply    String?   // Instructions or link
+  isOpen        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Lead {
+  id            String    @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  company       String?
+  projectType   String?   // JSON array from wizard
+  currentStage  String?
+  outcome       String?
+  timeline      String?
+  budgetRange   String?
+  message       String?
+  source        String    @default("CONTACT") // CONTACT, START_WIZARD
+  wizardData    String?   // JSON object for wizard responses
+  status        String    @default("NEW") // NEW, CONTACTED, QUALIFIED, CONVERTED
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model TimelineEvent {
+  id            String    @id @default(cuid())
+  year          Int
+  title         String
+  description   String?
+  tag           String?   // "Drogenide Era", "Transition", "Nextera Era"
+  order         Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model LabItem {
+  id            String    @id @default(cuid())
+  name          String
+  description    String?
+  status        String    @default("PROTOTYPE") // PROTOTYPE, INTERNAL, PUBLIC
+  link          String?   // GitHub, demo, landing page
+  category      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Setting {
+  id            String    @id @default(cuid())
+  key           String    @unique
+  value         String    // JSON or string
+  type          String    @default("STRING") // STRING, JSON, NUMBER
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Page {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  content       String?   // Rich text
+  metaTitle     String?
+  metaDescription String?
+  sections      String?   // JSON array of section configurations
+  isPublished   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Product {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  category        String    // "Mobile Application", "SaaS", "Website"
+  description     String?   // Short description
+  content         String?   // Rich text full description
+  tagline         String?   // Product tagline
+  techStack       String?   // JSON array of technologies
+  screenshots     String?   // JSON array of screenshot URLs
+  pricing         String?   // JSON object with pricing tiers
+  changelog       String?   // JSON array of changelog entries
+  versions        String?   // JSON array of version history
+  features        String?   // JSON array of features
+  status          String    @default("LIVE") // LIVE, BETA, COMING_SOON, ARCHIVED
+  isFeatured      Boolean   @default(false)
+  websiteUrl      String?   // Product website URL
+  demoUrl         String?   // Demo URL
+  githubUrl       String?   // GitHub repository URL
+  documentationUrl String? // Documentation URL
+  logo            String?   // Product logo URL
+  featuredImage   String?   // Featured image URL
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
