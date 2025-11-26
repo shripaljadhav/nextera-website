@@ -12,8 +12,15 @@ export default async function BlogPage() {
     orderBy: { publishedAt: 'desc' },
   })
 
-  // Get unique categories
-  const categories = ['All', ...new Set(blogPosts.map(post => post.category).filter(Boolean))]
+  // Get unique categories (filter out nulls and ensure proper typing)
+  const uniqueCategories = Array.from(
+    new Set(
+      blogPosts
+        .map(post => post.category)
+        .filter((category): category is string => Boolean(category))
+    )
+  )
+  const categories: string[] = ['All', ...uniqueCategories]
 
   return <BlogClient blogPosts={blogPosts} categories={categories} />
 }
