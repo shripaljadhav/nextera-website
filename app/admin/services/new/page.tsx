@@ -212,7 +212,7 @@ export default function NewServicePage() {
             onChange={(value) => setFormData({ ...formData, outcomes: value })}
             rows={6}
             placeholder='["Outcome 1", "Outcome 2", "Outcome 3"]'
-            helpText="JSON array of expected outcomes (e.g., [\"Faster delivery\", \"Better quality\"])"
+            helpText={'JSON array of expected outcomes (e.g., ["Faster delivery", "Better quality"])'}
             error={errors.outcomes}
           />
 
@@ -247,7 +247,7 @@ export default function NewServicePage() {
             onChange={(value) => setFormData({ ...formData, relatedServices: value })}
             rows={3}
             placeholder='["service-slug-1", "service-slug-2"]'
-            helpText="JSON array of related service slugs"
+            helpText={'JSON array of related service slugs'}
             error={errors.relatedServices}
           />
 
@@ -259,7 +259,7 @@ export default function NewServicePage() {
             onChange={(value) => setFormData({ ...formData, packages: value })}
             rows={6}
             placeholder='[{"name": "Basic", "price": "$5,000", "features": ["Feature 1"]}]'
-            helpText="JSON array of package objects"
+            helpText={'JSON array of package objects'}
             error={errors.packages}
           />
 
@@ -271,7 +271,7 @@ export default function NewServicePage() {
             onChange={(value) => setFormData({ ...formData, faqs: value })}
             rows={6}
             placeholder='[{"question": "Q?", "answer": "A"}]'
-            helpText="JSON array of FAQ objects"
+            helpText={'JSON array of FAQ objects'}
             error={errors.faqs}
           />
         </FormSection>
