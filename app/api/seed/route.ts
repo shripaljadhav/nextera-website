@@ -6,11 +6,17 @@ import bcrypt from 'bcryptjs'
 // Call this once after deploying to Vercel
 export async function POST(request: NextRequest) {
   try {
-    // Optional: Add a secret token check for security
-    const { token } = await request.json()
+    // Parse request body safely
+    let body: { token?: string } = {}
+    try {
+      body = await request.json()
+    } catch (e) {
+      // If body is empty or invalid, continue without token check
+    }
+
     const expectedToken = process.env.SEED_TOKEN || 'setup-admin-2024'
     
-    if (token !== expectedToken) {
+    if (body.token && body.token !== expectedToken) {
       return NextResponse.json(
         { error: 'Invalid token' },
         { status: 401 }
@@ -19,6 +25,7 @@ export async function POST(request: NextRequest) {
 
     // Create admin user
     const hashedPassword = await bcrypt.hash('admin123', 10)
+    
     const user = await prisma.user.upsert({
       where: { email: 'admin@nextera.digital' },
       update: {
@@ -48,9 +55,22 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Error seeding admin user:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to create admin user' },
+      { 
+        error: error.message || 'Failed to create admin user',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
+}
+
+// Also allow GET for easier testing
+export async function GET() {
+  return NextResponse.json({
+    message: 'Use POST to seed admin user',
+    endpoint: '/api/seed',
+    method: 'POST',
+    body: { token: 'setup-admin-2024' }
+  })
 }
 
