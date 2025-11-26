@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 interface SectionProps {
   children: ReactNode
   className?: string
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '7xl'
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '7xl'
 }
 
 export default function Section({ 
@@ -17,6 +17,7 @@ export default function Section({
     lg: 'max-w-lg',
     xl: 'max-w-xl',
     '2xl': 'max-w-2xl',
+    '3xl': 'max-w-3xl',
     '7xl': 'max-w-7xl',
   }
 
