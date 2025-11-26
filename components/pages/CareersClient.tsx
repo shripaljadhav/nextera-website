@@ -132,9 +132,9 @@ export default function CareersClient({ jobs }: CareersClientProps) {
                           )}
                         </div>
 
-                        {job.description && (
+                        {job.summary && (
                           <p className="text-gray-600 line-clamp-2">
-                            {job.description}
+                            {job.summary}
                           </p>
                         )}
                       </div>
