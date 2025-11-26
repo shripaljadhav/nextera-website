@@ -52,6 +52,13 @@ interface HomeClientProps {
   homepageSettings?: Record<string, any>
 }
 
+interface ProcessStep {
+  title: string
+  desc: string
+  output: string
+  icon: string
+}
+
 export default function HomeClient({ services, solutions, caseStudies, blogPosts, timelineEvents, homepageSettings = {} }: HomeClientProps) {
   // Use settings from database or fallback to defaults
   const heroTitle = homepageSettings.homepage_hero_title || 'We build modern software that actually moves your business'
@@ -62,7 +69,7 @@ export default function HomeClient({ services, solutions, caseStudies, blogPosts
   const heroSecondaryButtonText = homepageSettings.homepage_hero_secondary_button_text || 'View case studies'
   const heroSecondaryButtonLink = homepageSettings.homepage_hero_secondary_button_link || '/case-studies'
   
-  const processSteps = homepageSettings.homepage_process_steps || [
+  const processSteps: ProcessStep[] = homepageSettings.homepage_process_steps || [
     { title: 'Discover', desc: 'Understand your goals', output: 'Roadmap', icon: '🔍' },
     { title: 'Design', desc: 'Create user experiences', output: 'Clickable prototype', icon: '🎨' },
     { title: 'Build', desc: 'Develop with modern tech', output: 'Production-ready system', icon: '⚡' },
