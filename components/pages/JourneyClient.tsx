@@ -44,7 +44,7 @@ export default function JourneyClient({ timelineEvents }: JourneyClientProps) {
 
       {/* Timeline */}
       <section className="py-24 bg-white">
-        <Section maxWidth="4xl">
+        <Section maxWidth="3xl">
           {timelineEvents.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-xl text-gray-600">No timeline events yet.</p>
@@ -72,9 +72,9 @@ export default function JourneyClient({ timelineEvents }: JourneyClientProps) {
                     {/* Content */}
                     <div className={`w-full md:w-1/2 ${idx % 2 === 0 ? 'md:pr-12 pl-20 md:pl-0' : 'md:pl-12 pl-20 md:pr-0'}`}>
                       <div className="p-8 bg-gradient-to-br from-white to-rose-50 rounded-2xl border-2 border-rose-100 hover:border-rose-300 hover:shadow-xl transition-all duration-300">
-                        {event.date && (
+                        {event.year && (
                           <div className="inline-block px-3 py-1 bg-rose-100 text-rose-700 text-xs font-semibold rounded-full mb-4 border border-rose-200">
-                            {format(new Date(event.date), 'MMM yyyy')}
+                            {event.year}
                           </div>
                         )}
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -85,12 +85,7 @@ export default function JourneyClient({ timelineEvents }: JourneyClientProps) {
                             {event.description}
                           </p>
                         )}
-                        {event.milestone && (
-                          <div className="mt-4 p-4 bg-rose-50 rounded-lg border border-rose-200">
-                            <p className="text-sm font-semibold text-rose-700 mb-1">Milestone:</p>
-                            <p className="text-rose-800">{event.milestone}</p>
-                          </div>
-                        )}
+                        {/* Optional milestone field no longer exists in the current model; keeping UI simple */}
                       </div>
                     </div>
                   </motion.div>

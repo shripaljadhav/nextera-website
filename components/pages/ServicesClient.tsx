@@ -49,14 +49,8 @@ const iconComponents: Record<string, any> = {
   chart: ChartIcon,
 }
 
-interface ServiceWithExtras extends Service {
-  gradient: string
-  href: string
-  outcomes: string[]
-}
-
 interface ServicesClientProps {
-  services: ServiceWithExtras[]
+  services: (Service & { gradient: string; href: string })[]
 }
 
 export default function ServicesClient({ services }: ServicesClientProps) {
@@ -152,7 +146,18 @@ export default function ServicesClient({ services }: ServicesClientProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, idx) => {
+          {services.map((service, idx) => {
+            let outcomes: string[] = []
+            if (service.outcomes) {
+              try {
+                const parsed = JSON.parse(service.outcomes)
+                if (Array.isArray(parsed)) {
+                  outcomes = parsed.map((item) => String(item))
+                }
+              } catch {
+                outcomes = []
+              }
+            }
               const IconComponent = iconComponents[service.icon || 'rocket'] || RocketIcon
               return (
                 <motion.div
@@ -189,9 +194,9 @@ export default function ServicesClient({ services }: ServicesClientProps) {
                       {service.description}
                     </p>
 
-                    {service.outcomes && service.outcomes.length > 0 && (
+                    {outcomes.length > 0 && (
                       <div className="space-y-2 mb-6">
-                        {service.outcomes.slice(0, 3).map((outcome: string, i: number) => (
+                        {outcomes.slice(0, 3).map((outcome: string, i: number) => (
                           <div key={i} className="flex items-start text-sm text-gray-700">
                             <CheckIcon className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                             <span>{outcome}</span>
