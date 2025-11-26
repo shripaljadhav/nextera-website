@@ -7,7 +7,7 @@ interface Column {
   key: string
   label: string
   sortable?: boolean
-  type?: 'text' | 'badge' | 'date' | 'status' | 'boolean' | 'slug'
+  type?: 'text' | 'badge' | 'date' | 'status' | 'boolean' | 'slug' | 'number'
   badgeColors?: Record<string, string>
 }
 
